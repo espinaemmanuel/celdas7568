@@ -2,14 +2,14 @@ package ar.uba.fi.celdas7568.ciudad;
 
 import java.util.List;
 
-import ar.uba.fi.celdas7568.ciudad.heuristicas.HeuristicaDeDesicion;
+import ar.uba.fi.celdas7568.ciudad.heuristicas.HeuristicaDeDecision;
 
 import com.google.common.collect.Lists;
 
 public class Agente {
 	
 	private Personalidad personalidad;
-	private HeuristicaDeDesicion heuristicaDeDesicion;
+	private HeuristicaDeDecision heuristicaDeDesicion;
 	
 	public Zona elegirZona(Ciudad ciudad){
 		
@@ -41,11 +41,11 @@ public class Agente {
 		this.personalidad = personalidad;
 	}
 
-	public HeuristicaDeDesicion getHeuristicaDeDesicion() {
+	public HeuristicaDeDecision getHeuristicaDeDesicion() {
 		return heuristicaDeDesicion;
 	}
 
-	public void setHeuristicaDeDesicion(HeuristicaDeDesicion heuristicaDeDesicion) {
+	public void setHeuristicaDeDesicion(HeuristicaDeDecision heuristicaDeDesicion) {
 		this.heuristicaDeDesicion = heuristicaDeDesicion;
 	}
 }
