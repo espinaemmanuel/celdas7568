@@ -6,7 +6,7 @@ import ar.uba.fi.celdas7568.ciudad.Opinion;
 import ar.uba.fi.celdas7568.ciudad.Personalidad;
 import ar.uba.fi.celdas7568.ciudad.Zona;
 
-public interface HeuristicaDeDecision {
+public interface HeuristicaDeDecision<O extends Opinion> {
 
 	/**
 	 * En base al estado actual de la heuristica y la personalidad pasada como par�metro, genera una opini�n 
@@ -16,7 +16,7 @@ public interface HeuristicaDeDecision {
 	 * @param personalidad Personalidad del agente
 	 * @return Opinion sobre la zona
 	 */
-	public Opinion evaluarZona(Zona zona, Personalidad personalidad);
+	public O evaluarZona(Zona zona, Personalidad personalidad);
 
 	/**
 	 * Eval�a todas las opiniones obtenidas pasadas como par�metro y selecciona la zona de una de ellas o ninguna
@@ -26,7 +26,7 @@ public interface HeuristicaDeDecision {
 	 * @param personalidad la personalidad del agente que realiza la evaluaci�n
 	 * @return
 	 */
-	public Zona evaluarOpiniones(List<Opinion> opiniones, Personalidad personalidad);
+	public Zona evaluarOpiniones(List<O> opiniones, Personalidad personalidad);
 
 	/**
 	 * En base al estado actual de la heur�stica, y una personalidad de agente, toma una lista de opiniones y modifica
@@ -35,6 +35,6 @@ public interface HeuristicaDeDecision {
 	 * @param opiniones
 	 * @param personalidad
 	 */
-	public void reconsiderarOpiniones(List<Opinion> opiniones, Personalidad personalidad);
+	public void reconsiderarOpiniones(List<O> opiniones, Personalidad personalidad);
 
 }
