@@ -11,13 +11,26 @@
 			<artifactId>guava</artifactId>
 			<version>13.0.1</version>
 		</dependency>
-		
-<!-- Si vamos a utilizar un framework para persistencia diría que usemos uno que conozcamos todos -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.yaml</groupId> -->
-<!-- 			<artifactId>snakeyaml</artifactId> -->
-<!-- 			<version>1.10</version> -->
-<!-- 		</dependency> -->
-
+ 		<dependency>
+ 			<groupId>org.yaml</groupId>
+ 			<artifactId>snakeyaml</artifactId>
+ 			<version>1.10</version>
+ 		</dependency>
 	</dependencies>
+	
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+				    <groupId>org.apache.maven.plugins</groupId>
+				    <artifactId>maven-compiler-plugin</artifactId>
+				    <configuration>
+				      <source>1.6</source>
+				      <target>1.6</target>
+				      <encoding>UTF-8</encoding>
+				    </configuration>
+			  	</plugin>
+		  	</plugins>
+		</pluginManagement>
+	</build>
 </project>
