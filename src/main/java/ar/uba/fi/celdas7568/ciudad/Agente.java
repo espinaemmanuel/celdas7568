@@ -10,6 +10,13 @@ public class Agente {
 	
 	private Personalidad personalidad;
 	private HeuristicaDeDecision heuristicaDeDesicion;
+	private String nombre;
+	
+	public Agente(String nombre, Personalidad personalidad, HeuristicaDeDecision heuristica) {
+		this.nombre = nombre;
+		this.personalidad = personalidad;
+		this.heuristicaDeDesicion = heuristica;
+	}
 	
 	public Zona elegirZona(Ciudad ciudad){
 		
@@ -47,5 +54,13 @@ public class Agente {
 
 	public void setHeuristicaDeDesicion(HeuristicaDeDecision heuristicaDeDesicion) {
 		this.heuristicaDeDesicion = heuristicaDeDesicion;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 }
