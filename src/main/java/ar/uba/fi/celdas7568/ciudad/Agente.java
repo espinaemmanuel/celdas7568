@@ -40,6 +40,14 @@ public class Agente {
 		return zonaElegida;		
 	}
 	
+	@Override
+	public String toString() {
+		
+		Personalidad personalidad = getPersonalidad();
+		
+		return "Personalidad del agente: " + getNombre() + "\n\n" + personalidad.toString();
+	}
+	
 	public Personalidad getPersonalidad() {
 		return personalidad;
 	}

@@ -20,4 +20,23 @@ public class Personalidad {
 	public float transporte;
 	public float barrioExclusivo;
 	public float costo;
+	
+	@Override
+	public String toString() {
+		
+		String descripcion = "cultura: " + cultura + "\n" +
+		"diversion: " + diversion + "\n" +
+		"seguridad: " + seguridad + "\n" +
+		"educacion: "  + educacion + "\n" +
+		"naturaleza: " + naturaleza  + "\n" +
+		"seguridad: " + seguridad + "\n" +
+        "populoso: " + populoso + "\n" +
+        "familiar: " + familiar + "\n" +
+        "tranquilo: " + tranquilo + "\n" +
+        "transporte: " + transporte + "\n" +
+        "barrioExclusivo: " + barrioExclusivo + "\n" +
+        "costo: " + costo + "\n";
+		
+		return descripcion;
+	}
 }
