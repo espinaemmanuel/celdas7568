@@ -4,6 +4,12 @@
  */
 package ar.uba.fi.celdas7568.ciudad.gui;
 
+import ar.uba.fi.celdas7568.ciudad.Agente;
+import ar.uba.fi.celdas7568.ciudad.Ciudad;
+import ar.uba.fi.celdas7568.db.AgenteDBMemoria;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Nico
@@ -13,6 +19,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form VentanaPrincipal
      */
+    private Agente agenteAsignado;
+    private Ciudad ciudad;
+    
+    public void setAgente(Agente a){this.agenteAsignado=a;}
+    public Agente getAgente(){return this.agenteAsignado;}
+    
+    public void setCiudad(Ciudad c){this.ciudad = c;}
+    public Ciudad getCiudad(){return this.ciudad;}
+    
     public VentanaPrincipal() {
         initComponents();
     }
@@ -83,7 +98,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jLabel2.setText("Agente");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        List<Agente> listaAgentes = new AgenteDBMemoria().obtenerAgentes();
+        List<String> nombreAgentes = new ArrayList<String>();
+
+        for (Agente a : listaAgentes) {
+            nombreAgentes.add(a.getNombre());
+        }
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(nombreAgentes.toArray()));
 
         jLabel3.setText("Personalidad");
 
@@ -158,11 +179,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        System.out.println("Clic en Boton 1 Paso");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        System.out.println("Clic en Boton Todas Zonas");
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
