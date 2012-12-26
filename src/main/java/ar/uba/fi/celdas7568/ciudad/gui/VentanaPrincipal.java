@@ -32,8 +32,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form VentanaPrincipal
      */
-    private static Agente agenteAsignado;
-    private static Ciudad ciudad;
+    private static Agente agenteAsignado = null;
+    private static Ciudad ciudad = null;
     
     public static void setAgente(Agente a){VentanaPrincipal.agenteAsignado=a;}
     
@@ -237,22 +237,27 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        System.out.println("Clic en Boton 1 Paso");
-        PanelCiudad.setEstado("step");
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {   
+        if ((ciudad == null) || (agenteAsignado == null)) errMsg("No se han definido ciudad y agente para evaluar!");
+        else {
+            System.out.println("Clic en Boton 1 Paso");
+            PanelCiudad.setEstado("step");
+        }
     }                                        
     private void jComboActionPerformed(JComboBox j,JTable table1, java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        System.out.print("Cambia Combo a ");
-        String item = (String) j.getSelectedItem();
-        System.out.println(item);
-        table1.getModel().setValueAt("Sanga", 1, 1);
-        
+            System.out.print("Cambia Combo a ");
+            String item = (String) j.getSelectedItem();
+            System.out.println(item);
+            table1.getModel().setValueAt("Sanga", 1, 1);    
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        System.out.println("Clic en Boton Todas Zonas");
-        PanelCiudad.setEstado("runAll");
-        repaint();
+        if ((ciudad == null) || (agenteAsignado == null)) errMsg("No se han definido ciudad y agente para evaluar!");
+        else{
+            System.out.println("Clic en Boton Todas Zonas");
+            PanelCiudad.setEstado("runAll");
+            repaint();
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
