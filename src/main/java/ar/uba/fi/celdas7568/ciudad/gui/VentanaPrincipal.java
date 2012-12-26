@@ -6,9 +6,22 @@ package ar.uba.fi.celdas7568.ciudad.gui;
 
 import ar.uba.fi.celdas7568.ciudad.Agente;
 import ar.uba.fi.celdas7568.ciudad.Ciudad;
+import ar.uba.fi.celdas7568.ciudad.Personalidad;
 import ar.uba.fi.celdas7568.db.AgenteDBMemoria;
+import ar.uba.fi.celdas7568.db.CiudadDbJson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+import java.awt.Color;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 /**
  *
@@ -19,13 +32,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form VentanaPrincipal
      */
-    private Agente agenteAsignado;
-    private Ciudad ciudad;
+    private static Agente agenteAsignado;
+    private static Ciudad ciudad;
     
-    public void setAgente(Agente a){this.agenteAsignado=a;}
+    public static void setAgente(Agente a){VentanaPrincipal.agenteAsignado=a;}
+    
     public Agente getAgente(){return this.agenteAsignado;}
     
-    public void setCiudad(Ciudad c){this.ciudad = c;}
+    public static void setCiudad(Ciudad c){VentanaPrincipal.ciudad = c;PanelCiudad.setCiudad(c);}
     public Ciudad getCiudad(){return this.ciudad;}
     
     public VentanaPrincipal() {
@@ -47,11 +61,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
+        labelStatusCiudad = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,9 +112,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setEnabled(false);
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel2.setText("Agente");
+        jLabel2.setText("Agentes Predefinidos");
 
         List<Agente> listaAgentes = new AgenteDBMemoria().obtenerAgentes();
         List<String> nombreAgentes = new ArrayList<String>();
@@ -105,8 +124,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             nombreAgentes.add(a.getNombre());
         }
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(nombreAgentes.toArray()));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
-        jLabel3.setText("Personalidad");
+        labelStatusCiudad.setForeground(new java.awt.Color(255, 0, 0));
+        labelStatusCiudad.setText("Ciudad aún no cargada");
 
         jButton1.setText("Aplicar");
 
@@ -126,6 +151,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel5.setText("Información de Agente");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel6.setText("Información de Ciudad");
+
+        jLabel7.setText("Editar Personalidad");
+
+        jButton4.setText("Cargar Ciudad");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -142,17 +182,27 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addComponent(jButton3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
                     .addComponent(jLabel2)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
+                    .addComponent(labelStatusCiudad)
                     .addComponent(jButton1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(jButton4))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(508, Short.MAX_VALUE)
+                    .addComponent(jLabel7)
+                    .addGap(360, 360, 360)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel4))
@@ -162,35 +212,100 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(jButton2)
                     .addComponent(jButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel1))
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelStatusCiudad)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(89, 89, 89)
+                    .addComponent(jLabel7)
+                    .addContainerGap(410, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         System.out.println("Clic en Boton 1 Paso");
+        PanelCiudad.setEstado("step");
+    }                                        
+    private void jComboActionPerformed(JComboBox j,JTable table1, java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        System.out.print("Cambia Combo a ");
+        String item = (String) j.getSelectedItem();
+        System.out.println(item);
+        table1.getModel().setValueAt("Sanga", 1, 1);
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         System.out.println("Clic en Boton Todas Zonas");
-        
+        PanelCiudad.setEstado("runAll");
+        repaint();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        System.out.print("Cambio valor a: ");
+        jTable1.setEnabled(true);
+        System.out.println(jComboBox1.getSelectedItem());
+        List<Agente> listaAgentes = new AgenteDBMemoria().obtenerAgentes();
+	Agente a = listaAgentes.get(jComboBox1.getSelectedIndex());
+        Personalidad p = a.getPersonalidad();
+        jTable1.getModel().setValueAt(p.cultura     , 0, 1);
+        jTable1.getModel().setValueAt(p.diversion   , 1, 1);
+        jTable1.getModel().setValueAt(p.seguridad   , 2, 1);
+        jTable1.getModel().setValueAt(p.educacion   , 3, 1);
+        jTable1.getModel().setValueAt(p.naturaleza  , 4, 1);
+        jTable1.getModel().setValueAt(p.populoso    , 5, 1);
+        jTable1.getModel().setValueAt(p.familiar    , 6, 1);
+        jTable1.getModel().setValueAt(p.tranquilo   , 7, 1);
+        jTable1.getModel().setValueAt(p.transporte  , 8, 1);
+        jTable1.getModel().setValueAt(p.barrioExclusivo, 9, 1);
+        jTable1.getModel().setValueAt(p.costo       , 10, 1);
+        VentanaPrincipal.setAgente(a);
+        PanelCiudad.setAgente(a);
+        repaint();
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // BOTON CARGA CIUDAD
+        JFileChooser jc = new JFileChooser();
+        int returnVal = jc.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {    
+            try {
+                Ciudad ciuda = CiudadDbJson.load(jc.getSelectedFile().getPath());
+                VentanaPrincipal.setCiudad(ciuda);
+                labelStatusCiudad.setForeground(Color.green);
+                labelStatusCiudad.setText(jc.getSelectedFile().getPath());
+            } catch (JsonSyntaxException ex) {
+                errMsg("Error de Sintaxis del Archivo");
+            } catch (JsonIOException ex) {
+                errMsg("Error al leer del Archivo");
+            } catch (FileNotFoundException ex) {
+                errMsg("El archivo no fue encontrado");
+            }
+        }
+        repaint();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void launch(Agente a, Ciudad c) {
+    	VentanaPrincipal.setAgente(a);
+    	VentanaPrincipal.setCiudad(c);
+    	
         /*
          * Set the Nimbus look and feel
          */
@@ -217,6 +332,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        
 
         /*
          * Create and display the form
@@ -232,13 +349,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel labelStatusCiudad;
     // End of variables declaration//GEN-END:variables
+
+    private void errMsg(String msg) {
+        JOptionPane.showMessageDialog(this,msg,"Error (!)",JOptionPane.ERROR_MESSAGE);
+    }
 }

@@ -30,4 +30,8 @@ public class Ciudad implements Iterable<Zona>{
 		return agentes.get(zona);
 	}
 
+    public int getCantZonas() {
+            return zonas.size();
+    }
+
 }

@@ -19,31 +19,66 @@ import sun.management.Agent;
  * @author Nico
  */
 public class PanelCiudad extends JPanel{
-    
+    private static String estado = "stop";
     private static Ciudad ciudad;
     private static Agente agente;
-    private static final float VALOR_MAXIMO_OPINION = 60f; //Ajustar para sacar más o menos verde
+    private static final float VALOR_MAXIMO_OPINION = 16f; //Ajustar para sacar más o menos verde
      
     public static void setAgente (Agente a ){PanelCiudad.agente = a;}
     public static void setCiudad (Ciudad c ){PanelCiudad.ciudad = c;}
-    
+    public static void setEstado (String e ){PanelCiudad.estado = e;}
     
     @Override
     public void paintComponent(Graphics g) {
-         super.paintComponent(g);
-         Iterator<Zona> it = ciudad.iterator();
-         int i = 0;
-         int j = 0;
-         while(it.hasNext()){
-             Zona z = it.next();
-             OpinionSimple o = (OpinionSimple) agente.getHeuristicaDeDesicion().evaluarZona(z, agente.getPersonalidad());
-             float green = (float) (o.getValorOpinion() / VALOR_MAXIMO_OPINION);
-             float red   = 1.0f - green;
-             Color c = new Color(red,green,0.0f);
-             g.setColor(c);
-             g.fillRect(j * 30, i * 30, 30, 30);
-             j++;
-             if (j >= 10) {i++; j = 0;}
+    	super.paintComponent(g);
+         
+         if (estado == "stop"){
+        	 for (int i=0 ; i<10; i++ )
+                 for (int j=0 ; j<10; j++ ) {
+                     float gr = (float)Math.random();
+                     float re = 1-gr;
+                    Color c = new Color(0.5f,0.5f,0.5f);
+                         g.setColor(c);
+                         g.fillRect(j * 30, i * 30, 30, 30);
+                         String chars = "Simulación Detenida";
+                         g.setColor(Color.black);
+                         g.drawChars(chars.toCharArray(), 0 , chars.length(), 100, 100);
+                 }
+         	}
+        if (estado == "step"){
+            	 for (int i=0 ; i<10; i++ )
+                     for (int j=0 ; j<10; j++ ) {
+                         float gr = (float)Math.random();
+                         float re = 1-gr;
+                        Color c = new Color(0.5f,0.5f,0.5f);
+                             g.setColor(c);
+                             g.fillRect(j * 30, i * 30, 30, 30);
+             }
+        }
+        	 
+        	 
+         if (estado == "runAll"){
+	         Iterator<Zona> it = ciudad.iterator();
+                 int totZonas = ciudad.getCantZonas();
+                 
+                 int dimension = (int) (300 / Math.sqrt(totZonas));
+	         int i = 0;
+	         int j = 0;
+	         while(it.hasNext()){
+	             Zona z = it.next();
+                    if (z != null) {
+                        OpinionSimple o = (OpinionSimple) agente.getHeuristicaDeDesicion().evaluarZona(z, agente.getPersonalidad());
+                        float green = (float) (o.getValorOpinion() / VALOR_MAXIMO_OPINION);
+                        System.out.println(o.getValorOpinion());
+                        float red   = 1.0f - green;
+                        Color c = new Color(red,green,0.0f);
+                        g.setColor(c);
+                        g.fillRect(j * dimension, i * dimension, dimension, dimension);
+                        j++;
+                        if (j >=  Math.sqrt(totZonas)) {i++; j = 0;}
+                     }
+                     
+	         }
          }
          /*
         for (int i=0 ; i<10; i++ )
