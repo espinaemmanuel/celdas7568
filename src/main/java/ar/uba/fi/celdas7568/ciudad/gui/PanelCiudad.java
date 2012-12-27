@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Iterator;
 import javax.swing.JPanel;
+import javax.swing.JToolTip;
 import sun.management.Agent;
 
 /**
@@ -22,6 +23,7 @@ public class PanelCiudad extends JPanel{
     private static String estado = "stop";
     private static Ciudad ciudad;
     private static Agente agente;
+   
     private static final float VALOR_MAXIMO_OPINION = 16f; //Ajustar para sacar más o menos verde
      
     public static void setAgente (Agente a ){PanelCiudad.agente = a;}
@@ -60,8 +62,8 @@ public class PanelCiudad extends JPanel{
          if (estado == "runAll"){
 	         Iterator<Zona> it = ciudad.iterator();
                  int totZonas = ciudad.getCantZonas();
-                 
-                 int dimension = (int) (300 / Math.sqrt(totZonas));
+                 int sqrt = (int) Math.sqrt(totZonas);
+                 int dimension = (int) (300 / (sqrt + 1));
 	         int i = 0;
 	         int j = 0;
 	         while(it.hasNext()){
@@ -69,13 +71,16 @@ public class PanelCiudad extends JPanel{
                     if (z != null) {
                         OpinionSimple o = (OpinionSimple) agente.getHeuristicaDeDesicion().evaluarZona(z, agente.getPersonalidad());
                         float green = (float) (o.getValorOpinion() / VALOR_MAXIMO_OPINION);
-                        System.out.println(o.getValorOpinion());
+                       
+                        if (green > 1.0f) green = 1.0f;
+                        if (green < 0.0f) green = 0.0f;
+                        
                         float red   = 1.0f - green;
                         Color c = new Color(red,green,0.0f);
                         g.setColor(c);
                         g.fillRect(j * dimension, i * dimension, dimension, dimension);
                         j++;
-                        if (j >=  Math.sqrt(totZonas)) {i++; j = 0;}
+                        if (j >  sqrt ) {i++; j = 0;}
                      }
                      
 	         }
@@ -90,8 +95,20 @@ public class PanelCiudad extends JPanel{
                       g.fillRect(j * 30, i * 30, 30, 30);
                  
                } 
-           */  
-      
-        
+           */   
     }
+    @Override
+     public boolean contains(int x, int y) {
+        if (ciudad != null) {
+            int totZonas = ciudad.getCantZonas(); 
+            int sqrt = (int) Math.sqrt(totZonas);
+            int fila = y / (300 / (sqrt + 1));           
+            int col = x / (300 / (sqrt + 1));   
+            int zona = fila * (sqrt + 1) +  col;
+            if (zona < totZonas)
+                setToolTipText("Row: " + fila + " - Col: " + col + " / Zona: " + zona );
+            
+        }
+        return super.contains(x, y);
+      }
 }

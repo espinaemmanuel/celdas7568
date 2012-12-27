@@ -129,6 +129,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 jComboBox1ActionPerformed(evt);
             }
         });
+        jComboBox1.setSelectedIndex(0);
 
         labelStatusCiudad.setForeground(new java.awt.Color(255, 0, 0));
         labelStatusCiudad.setText("Ciudad aún no cargada");
