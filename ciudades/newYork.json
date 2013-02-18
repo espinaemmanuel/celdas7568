@@ -1,0 +1,22 @@
+{
+    "nombre": "New York",
+    "ancho": 100,
+    "alto": 100,
+    "edificios": [
+        {
+            "tipo": "COMISARIA",
+            "x": 20,
+            "y": 40
+        },
+        {
+            "tipo": "BAR",
+            "x": 70,
+            "y": 80
+        },
+        {
+            "tipo": "PARQUE",
+            "x": 30,
+            "y": 30
+        }
+    ]
+}

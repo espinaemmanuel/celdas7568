@@ -1,0 +1,15 @@
+package ar.uba.fi.celdas7568.ciudad;
+
+public enum AtributoPersonalidad{
+	CULTURA,
+	DIVERSION,
+	SEGURIDAD,
+	EDUCACION,
+	NATURALEZA,
+	POPULOSO,
+	FAMILIAR,
+	TRANQUILO,
+	TRANSPORTE,
+	EXCLUSIVIDAD,
+	COSTO	
+}

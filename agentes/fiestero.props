@@ -1,0 +1,15 @@
+{
+    "nombre": "Fiestero",
+    
+    "CULTURA": 0,
+    "DIVERSION": 1,
+    "SEGURIDAD": 0,
+    "EDUCACION": 0,
+    "NATURALEZA": 0,
+    "POPULOSO": 1,
+    "FAMILIAR": -1,
+    "TRANQUILO": -1,
+    "TRANSPORTE": 0,
+    "EXCLUSIVIDAD": -1,
+    "COSTO": 0
+}

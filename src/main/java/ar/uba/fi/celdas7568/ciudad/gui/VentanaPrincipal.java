@@ -5,22 +5,24 @@
 package ar.uba.fi.celdas7568.ciudad.gui;
 
 import ar.uba.fi.celdas7568.ciudad.Agente;
+import ar.uba.fi.celdas7568.ciudad.AtributoPersonalidad;
 import ar.uba.fi.celdas7568.ciudad.Ciudad;
+import ar.uba.fi.celdas7568.ciudad.ObservadorModeloGrilla;
 import ar.uba.fi.celdas7568.ciudad.Personalidad;
-import ar.uba.fi.celdas7568.db.AgenteDBMemoria;
-import ar.uba.fi.celdas7568.db.CiudadDbJson;
+import ar.uba.fi.celdas7568.db.CiudadLoaderJson;
+import ar.uba.fi.celdas7568.db.OrigenAgentes;
+
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import java.awt.Color;
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 
 /**
@@ -28,22 +30,35 @@ import javax.swing.JTable;
  * @author Nico
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
+	
+	private final static Logger logger = Logger.getLogger(VentanaPrincipal.class.getName()); 
+
+    private ModeloSimulador modelo;
+
+	private Grilla grilla; 
 
     /**
      * Creates new form VentanaPrincipal
+     * @param modelo 
      */
-    private static Agente agenteAsignado = null;
-    private static Ciudad ciudad = null;
     
-    public static void setAgente(Agente a){VentanaPrincipal.agenteAsignado=a;}
-    
-    public Agente getAgente(){return this.agenteAsignado;}
-    
-    public static void setCiudad(Ciudad c){VentanaPrincipal.ciudad = c;PanelCiudad.setCiudad(c);}
-    public Ciudad getCiudad(){return this.ciudad;}
-    
-    public VentanaPrincipal() {
+    public VentanaPrincipal(ModeloSimulador modelo) {
+    	this.modelo = modelo;
+    	this.grilla = new Grilla(300, 300, this.modelo.getCiudad());
+    	
         initComponents();
+        
+        if(this.modelo.getCiudad() != null){
+        	ciudadCargada();
+        }
+    }
+    
+    public void ciudadCargada(){    	
+        labelStatusCiudad.setForeground(Color.green);
+        labelStatusCiudad.setText("Ciudad seleccionada: " + this.modelo.getCiudad().getNombre());
+       
+        repaint();
+    	
     }
 
     /**
@@ -55,14 +70,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new PanelCiudad();
+        jPanel1 = this.grilla ;
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
         labelStatusCiudad = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -115,15 +129,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jTable1.setEnabled(false);
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel2.setText("Agentes Predefinidos");
-
-        List<Agente> listaAgentes = new AgenteDBMemoria().obtenerAgentes();
-        List<String> nombreAgentes = new ArrayList<String>();
-
-        for (Agente a : listaAgentes) {
-            nombreAgentes.add(a.getNombre());
-        }
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(nombreAgentes.toArray()));
+        jLabel2.setText("Origen de agentes");
+        
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(this.modelo.getOrigenesAgentes()));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -134,8 +142,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         labelStatusCiudad.setForeground(new java.awt.Color(255, 0, 0));
         labelStatusCiudad.setText("Ciudad aún no cargada");
 
-        jButton1.setText("Aplicar");
-
         jLabel4.setText("Control");
 
         jButton2.setText(">");
@@ -145,7 +151,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText(">>");
+        jButton3.setText("> x 100");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -187,7 +193,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelStatusCiudad)
-                    .addComponent(jButton1)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(jButton4))
@@ -219,8 +224,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(labelStatusCiudad)
@@ -239,61 +242,70 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {   
-        if ((ciudad == null) || (agenteAsignado == null)) errMsg("No se han definido ciudad y agente para evaluar!");
-        else {
-            System.out.println("Clic en Boton 1 Paso");
-            PanelCiudad.setEstado("step");
-        }
-    }                                        
-    private void jComboActionPerformed(JComboBox j,JTable table1, java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-            System.out.print("Cambia Combo a ");
-            String item = (String) j.getSelectedItem();
-            System.out.println(item);
+        Agente agente = this.modelo.getAgenteActual();
+        this.modelo.avanzarAgente();
+        this.modelo.getCiudad().agregarAgente(agente);
+        
+        this.cargarPersonalidadEnTabla(this.modelo.getAgenteActual().getPersonalidad());
+    }
+    
+    private void jComboActionPerformed(JComboBox j,JTable table1, java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed            
+            logger.info("Cambia origen agentes a " + j.getSelectedItem());
             table1.getModel().setValueAt("Sanga", 1, 1);    
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if ((ciudad == null) || (agenteAsignado == null)) errMsg("No se han definido ciudad y agente para evaluar!");
-        else{
-            System.out.println("Clic en Boton Todas Zonas");
-            PanelCiudad.setEstado("runAll");
-            repaint();
-        }
+    	for(int i=0; i<100; i++){
+            Agente agente = this.modelo.getAgenteActual();
+            this.modelo.avanzarAgente();
+            this.modelo.getCiudad().agregarAgente(agente);
+            
+            
+    	}
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        System.out.print("Cambio valor a: ");
+    	OrigenAgentes origen = (OrigenAgentes) jComboBox1.getSelectedItem();
+    	this.modelo.setOrigenAgenteActual(origen);	
+    	logger.info("Cambio origen de agentes a " + origen);
+    	
+    	this.modelo.avanzarAgente();
+    	Agente nuevoAgente = this.modelo.getAgenteActual();
+    	
         jTable1.setEnabled(true);
-        System.out.println(jComboBox1.getSelectedItem());
-        List<Agente> listaAgentes = new AgenteDBMemoria().obtenerAgentes();
-	Agente a = listaAgentes.get(jComboBox1.getSelectedIndex());
-        Personalidad p = a.getPersonalidad();
-        jTable1.getModel().setValueAt(p.cultura     , 0, 1);
-        jTable1.getModel().setValueAt(p.diversion   , 1, 1);
-        jTable1.getModel().setValueAt(p.seguridad   , 2, 1);
-        jTable1.getModel().setValueAt(p.educacion   , 3, 1);
-        jTable1.getModel().setValueAt(p.naturaleza  , 4, 1);
-        jTable1.getModel().setValueAt(p.populoso    , 5, 1);
-        jTable1.getModel().setValueAt(p.familiar    , 6, 1);
-        jTable1.getModel().setValueAt(p.tranquilo   , 7, 1);
-        jTable1.getModel().setValueAt(p.transporte  , 8, 1);
-        jTable1.getModel().setValueAt(p.barrioExclusivo, 9, 1);
-        jTable1.getModel().setValueAt(p.costo       , 10, 1);
-        VentanaPrincipal.setAgente(a);
-        PanelCiudad.setAgente(a);
-        repaint();
+
+        Personalidad p = nuevoAgente.getPersonalidad();
+        this.cargarPersonalidadEnTabla(p);
     }//GEN-LAST:event_jComboBox1ActionPerformed
+    
+    private void cargarPersonalidadEnTabla(Personalidad p){
+        jTable1.getModel().setValueAt(p.get(AtributoPersonalidad.CULTURA), 0, 1);
+        jTable1.getModel().setValueAt(p.get(AtributoPersonalidad.DIVERSION), 1, 1);
+        jTable1.getModel().setValueAt(p.get(AtributoPersonalidad.SEGURIDAD), 2, 1);
+        jTable1.getModel().setValueAt(p.get(AtributoPersonalidad.EDUCACION), 3, 1);
+        jTable1.getModel().setValueAt(p.get(AtributoPersonalidad.NATURALEZA), 4, 1);
+        jTable1.getModel().setValueAt(p.get(AtributoPersonalidad.POPULOSO), 5, 1);
+        jTable1.getModel().setValueAt(p.get(AtributoPersonalidad.FAMILIAR), 6, 1);
+        jTable1.getModel().setValueAt(p.get(AtributoPersonalidad.TRANQUILO), 7, 1);
+        jTable1.getModel().setValueAt(p.get(AtributoPersonalidad.TRANSPORTE), 8, 1);
+        jTable1.getModel().setValueAt(p.get(AtributoPersonalidad.EXCLUSIVIDAD), 9, 1);
+        jTable1.getModel().setValueAt(p.get(AtributoPersonalidad.COSTO), 10, 1);
+        repaint();
+    }
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // BOTON CARGA CIUDAD
         JFileChooser jc = new JFileChooser();
+        jc.setCurrentDirectory(new File("./ciudades"));
         int returnVal = jc.showOpenDialog(this);
+        
         if (returnVal == JFileChooser.APPROVE_OPTION) {    
             try {
-                Ciudad ciuda = CiudadDbJson.load(jc.getSelectedFile().getPath());
-                VentanaPrincipal.setCiudad(ciuda);
-                labelStatusCiudad.setForeground(Color.green);
-                labelStatusCiudad.setText(jc.getSelectedFile().getPath());
+                Ciudad ciudad = CiudadLoaderJson.load(new File(jc.getSelectedFile().getPath()));
+                this.modelo.setCiudad(ciudad);
+                
+                this.ciudadCargada();
+         
             } catch (JsonSyntaxException ex) {
                 errMsg("Error de Sintaxis del Archivo");
             } catch (JsonIOException ex) {
@@ -308,19 +320,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void launch(Agente a, Ciudad c) {
-    	VentanaPrincipal.setAgente(a);
-    	VentanaPrincipal.setCiudad(c);
+    public static void launch(final ModeloSimulador modelo) {
     	
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -347,12 +348,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new VentanaPrincipal().setVisible(true);
+            	VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(modelo);
+            	ventanaPrincipal.setVisible(true);
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

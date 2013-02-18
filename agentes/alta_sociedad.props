@@ -1,0 +1,15 @@
+{
+    "nombre": "Alta Sociedad",
+    
+    "CULTURA": 1,
+    "DIVERSION": 0,
+    "SEGURIDAD": 1,
+    "EDUCACION": 0.5,
+    "NATURALEZA": 0,
+    "POPULOSO": 0,
+    "FAMILIAR": 0.5,
+    "TRANQUILO": 1,
+    "TRANSPORTE": 0,
+    "EXCLUSIVIDAD": 1,
+    "COSTO": -1
+}
