@@ -1,5 +1,9 @@
 package ar.uba.fi.celdas.som;
 
+import java.util.Set;
+
+import com.google.common.collect.Sets;
+
 public class NodoSOM {
 	
 	private Punto punto;

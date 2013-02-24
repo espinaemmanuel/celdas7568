@@ -3,6 +3,7 @@ package ar.uba.fi.celdas7568.ciudad.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.color.ColorSpace;
 
 import javax.swing.JPanel;
 
@@ -15,7 +16,6 @@ public class Grilla extends JPanel implements ObservadorModeloGrilla {
 	private ModeloGrilla modelo;
 	private int ancho;
 	private int alto;
-	private float tonoColor = 0;
 	
 	public Grilla(int ancho, int alto, ModeloGrilla modelo){
 		checkArgument(ancho % modelo.getAncho() == 0);
@@ -48,8 +48,9 @@ public class Grilla extends JPanel implements ObservadorModeloGrilla {
 				int rectX = anchoCelda*x;
 				int rectY = altoCelda*y;
 				double intensidad = modelo.getIntensidad(x, y);
+				Color color = modelo.getColor();
 				
-				g.setColor(buildColor(intensidad));
+				g.setColor(buildColor(color, intensidad));
 				g.fillRect(rectX, rectY, anchoCelda, altoCelda);
 			}
 		}
@@ -70,8 +71,11 @@ public class Grilla extends JPanel implements ObservadorModeloGrilla {
 	    g.finalize();
 	}
 
-	private Color buildColor(double intensidad) {
-		return Color.getHSBColor(tonoColor, (float) intensidad, 1);
+	private Color buildColor(Color color, double intensidad) {
+		float[] colorComponents = new float[3];	
+		Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), colorComponents);
+		
+		return Color.getHSBColor(colorComponents[0], (float) intensidad, 1);
 	}
 
 	@Override

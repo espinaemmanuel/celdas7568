@@ -1,0 +1,15 @@
+{
+    "nombre": "Padre",
+    
+    "CULTURA": 1,
+    "DIVERSION": 0,
+    "SEGURIDAD": 1,
+    "EDUCACION": 1,
+    "NATURALEZA": 1,
+    "POPULOSO": 0.5,
+    "FAMILIAR": 1,
+    "TRANQUILO": 0.5,
+    "TRANSPORTE": 0.8,
+    "EXCLUSIVIDAD": 0,
+    "COSTO": 0.5
+}

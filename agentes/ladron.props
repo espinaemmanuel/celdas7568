@@ -1,0 +1,15 @@
+{
+    "nombre": "Ladron",
+    
+    "CULTURA": 0,
+    "DIVERSION": 0,
+    "SEGURIDAD": -1,
+    "EDUCACION": 0,
+    "NATURALEZA": 0,
+    "POPULOSO": 0,
+    "FAMILIAR": 1,
+    "TRANQUILO": 0,
+    "TRANSPORTE": 1,
+    "EXCLUSIVIDAD": 1,
+    "COSTO": 1
+}

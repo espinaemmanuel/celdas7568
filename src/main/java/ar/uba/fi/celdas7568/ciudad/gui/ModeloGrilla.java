@@ -1,5 +1,6 @@
 package ar.uba.fi.celdas7568.ciudad.gui;
 
+import java.awt.Color;
 import java.util.List;
 
 import ar.uba.fi.celdas7568.ciudad.ObservadorModeloGrilla;
@@ -15,5 +16,7 @@ public interface ModeloGrilla {
 	public List<IconoGrilla> getIconos();
 	
 	public void agregarObservador(ObservadorModeloGrilla observador);
+
+	public Color getColor();
 
 }

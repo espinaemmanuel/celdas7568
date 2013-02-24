@@ -1,0 +1,15 @@
+{
+    "nombre": "Universitario",
+    
+    "CULTURA": 1,
+    "DIVERSION": 0.5,
+    "SEGURIDAD": 0,
+    "EDUCACION": 1,
+    "NATURALEZA": 0,
+    "POPULOSO": 0,
+    "FAMILIAR": 0,
+    "TRANQUILO": 0.5,
+    "TRANSPORTE": 1,
+    "EXCLUSIVIDAD": 0,
+    "COSTO": 1
+}

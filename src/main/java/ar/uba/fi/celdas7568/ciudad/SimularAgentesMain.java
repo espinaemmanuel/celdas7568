@@ -3,7 +3,9 @@ package ar.uba.fi.celdas7568.ciudad;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
@@ -13,6 +15,7 @@ import ar.uba.fi.celdas7568.ciudad.gui.VentanaPrincipal;
 import ar.uba.fi.celdas7568.ciudad.heuristicas.Heuristica;
 import ar.uba.fi.celdas7568.ciudad.heuristicas.HeuristicaSimple;
 import ar.uba.fi.celdas7568.db.CiudadLoaderJson;
+import ar.uba.fi.celdas7568.db.OrigenAgenteGenetico;
 import ar.uba.fi.celdas7568.db.OrigenAgenteJson;
 import ar.uba.fi.celdas7568.db.OrigenAgenteRandom;
 
@@ -37,11 +40,18 @@ public class SimularAgentesMain {
 			//Cargar personalidades
 			modeloSimulador.addAgenteOrigen(new OrigenAgenteRandom());
 			
+			List<Agente> poolGeneracion = Lists.newArrayList();
+			
 			File agentes = new File("./agentes");
 			for(File agenteFile : agentes.listFiles()){
 				OrigenAgenteJson origenJson = new OrigenAgenteJson(agenteFile);
 				modeloSimulador.addAgenteOrigen(origenJson);
+				poolGeneracion.add(origenJson.obtenerAgente());
 			}
+			
+			double toleracia = ConfiguracionSimulador.getDouble(ConfiguracionSimulador.TOLERANCIA_GENERADOR);
+			int origenes = ConfiguracionSimulador.getInteger(ConfiguracionSimulador.ORIGENES_GENERADOR);
+			modeloSimulador.addAgenteOrigen(new OrigenAgenteGenetico(poolGeneracion, toleracia, origenes));
 			
             try {
                 VentanaPrincipal.launch(modeloSimulador);

@@ -1,5 +1,6 @@
 package ar.uba.fi.celdas7568.ciudad;
 
+import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -51,6 +52,13 @@ public class Ciudad implements ModeloGrilla {
 			
 			this.som.forzarEstado(zona.x, zona.y, heuristica.vectorizar(p));
 		}
+		
+		this.som.setDecaidaDistancia(ConfiguracionSimulador.getDouble(ConfiguracionSimulador.DECAIDA_DISTANCIA));
+		this.som.setDecaimientoLearningRate(ConfiguracionSimulador.getDouble(ConfiguracionSimulador.DECAIDA_LEARNING_RATE));
+		this.som.setDecaimientoRadio(ConfiguracionSimulador.getDouble(ConfiguracionSimulador.DECAIDA_RADIO));
+		this.som.setIndesicion(ConfiguracionSimulador.getDouble(ConfiguracionSimulador.INDESICION));
+		this.som.setLearningRateInicial(ConfiguracionSimulador.getDouble(ConfiguracionSimulador.LEARNING_RATE_INICIAL));
+		this.som.setRadioInicial(ConfiguracionSimulador.getDouble(ConfiguracionSimulador.RADIO_INICIAL));
 		
 		inicializada = true;
 	}
@@ -138,6 +146,11 @@ public class Ciudad implements ModeloGrilla {
 		for(ObservadorModeloGrilla observador : observadores){
 			observador.notificarCambio();
 		}
+	}
+
+	@Override
+	public Color getColor() {
+		return this.visualizacionZona.getColorBase();
 	}
 
 }
